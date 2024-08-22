@@ -36,10 +36,10 @@ app.UseHttpsRedirection();
 // .WithName("GetWeatherForecast")
 // .WithOpenApi();
 
-var products = new List<Product>
+var products = new []
 {
-    new Product(){Id = 1, Name="Hat"},
-    new Product(){Id=2, Name="Scarf"}
+    new {Id = 1, Name="Hat"},
+    new {Id=2, Name="Scarf"}
 };
 
 app.MapGet("/", () => "Hello catalogue");
