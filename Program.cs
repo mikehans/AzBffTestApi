@@ -16,52 +16,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// var summaries = new[]
-// {
-//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-// };
-
-// app.MapGet("/weatherforecast", () =>
-// {
-//     var forecast =  Enumerable.Range(1, 5).Select(index =>
-//         new WeatherForecast
-//         (
-//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//             Random.Shared.Next(-20, 55),
-//             summaries[Random.Shared.Next(summaries.Length)]
-//         ))
-//         .ToArray();
-//     return forecast;
-// })
-// .WithName("GetWeatherForecast")
-// .WithOpenApi();
-
-var products = new []
+var products = new List<Product>
 {
-    new {Id = 1, Name="Hat"},
-    new {Id=2, Name="Scarf"}
+    new Product(1, "Hat"),
+    new Product(2, "Scarf")
 };
 
 app.MapGet("/", () => "Hello catalogue");
 
+app.MapGet("/env", () => app.Environment.IsDevelopment());
+
+
 // get the data set
-app.MapGet("/catalogue", () => Results.Ok(products));
+app.MapGet("/catalogue", () => TypedResults.Ok(products));
 
-// app.MapGet("/catalogue/{id}", (id) => {
-//     return TypedResults.Ok(products[0]);
-// });
+app.MapGet("/catalogue/{id}", (int id) => Results.Ok(products.Where(p => p.Id == id)));
 
-app.MapPost("/catalogue", () => TypedResults.Ok());
+app.MapPost("/catalogue", () => TypedResults.Created());
 
 app.Run();
 
-record Product()
-{
-    public int Id;
-    public required string Name;
-}
-
-// record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-// {
-//     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-// }
+record Product(int Id, string Name);
