@@ -45,7 +45,7 @@ var products = new List<Product>
 app.MapGet("/", () => "Hello catalogue");
 
 // get the data set
-app.MapGet("/catalogue", () => products);
+app.MapGet("/catalogue", () => Results.Ok(products));
 
 // app.MapGet("/catalogue/{id}", (id) => {
 //     return TypedResults.Ok(products[0]);
